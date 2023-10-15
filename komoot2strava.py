@@ -17,7 +17,7 @@ from stravalib import Client
 
 LOGIN_URL = "https://account.komoot.com/v1/signin"
 SIGNIN_URL = "https://account.komoot.com/actions/transfer?type=signin"
-TOUR_URL = 'https://www.komoot.com/api/v007/users/1714012209405/tours/?sport_types=&type=tour_recorded&sort_field=date&sort_direction=desc&name=&status=private&hl=nl&page={}&limit=24'
+TOUR_URL = 'https://www.komoot.com/api/v007/users/{}/tours/?sport_types=&type=tour_recorded&sort_field=date&sort_direction=desc&name=&status=private&hl=nl&page={}&limit=24'
 GPX_URL = 'https://www.komoot.com/api/v007/tours/{}.gpx'
 LOG_FILE = os.path.expanduser("~/.komoot2strava/komoot2strava.log")
 KOMOOT_CRED_FILE = os.path.expanduser("~/.komoot2strava/komoot_account.json")
@@ -116,7 +116,7 @@ def komoot_get_tour_page(s, page):
     headers = {"onlyprops": "true"}
 
     LOGGER.info(f"Fetching page {page}")
-    response = s.get(TOUR_URL.format(page), headers=headers)
+    response = s.get(TOUR_URL.format(KOMOOT_CRED["client_id"], page), headers=headers)
     if response.status_code != 200:
         LOGGER.error("Culd not retrieve from Komoot. Something went wrong...")
         raise ValueError
